@@ -6,7 +6,7 @@ include(CheckCXXCompilerFlag)
 include(CheckCXXSourceCompiles)
 
 
-macro(myproject_supports_sanitizers)
+macro(eigen_tests_supports_sanitizers)
   # Emscripten doesn't support sanitizers
   if(EMSCRIPTEN)
     set(SUPPORTS_UBSAN OFF)
@@ -57,110 +57,110 @@ macro(myproject_supports_sanitizers)
   endif()
 endmacro()
 
-macro(myproject_setup_options)
-  option(myproject_ENABLE_HARDENING "Enable hardening" ON)
-  option(myproject_ENABLE_COVERAGE "Enable coverage reporting" OFF)
+macro(eigen_tests_setup_options)
+  option(eigen_tests_ENABLE_HARDENING "Enable hardening" ON)
+  option(eigen_tests_ENABLE_COVERAGE "Enable coverage reporting" OFF)
   cmake_dependent_option(
-    myproject_ENABLE_GLOBAL_HARDENING
+    eigen_tests_ENABLE_GLOBAL_HARDENING
     "Attempt to push hardening options to built dependencies"
     ON
-    myproject_ENABLE_HARDENING
+    eigen_tests_ENABLE_HARDENING
     OFF)
 
-  myproject_supports_sanitizers()
+  eigen_tests_supports_sanitizers()
 
-  if(NOT PROJECT_IS_TOP_LEVEL OR myproject_PACKAGING_MAINTAINER_MODE)
-    option(myproject_ENABLE_IPO "Enable IPO/LTO" OFF)
-    option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
-    option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
-    option(myproject_ENABLE_UNITY_BUILD "Enable unity builds" OFF)
-    option(myproject_ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
-    option(myproject_ENABLE_CPPCHECK "Enable cpp-check analysis" OFF)
-    option(myproject_ENABLE_PCH "Enable precompiled headers" OFF)
-    option(myproject_ENABLE_CACHE "Enable ccache" OFF)
+  if(NOT PROJECT_IS_TOP_LEVEL OR eigen_tests_PACKAGING_MAINTAINER_MODE)
+    option(eigen_tests_ENABLE_IPO "Enable IPO/LTO" OFF)
+    option(eigen_tests_WARNINGS_AS_ERRORS "Treat Warnings As Errors" OFF)
+    option(eigen_tests_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF)
+    option(eigen_tests_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
+    option(eigen_tests_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" OFF)
+    option(eigen_tests_ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
+    option(eigen_tests_ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
+    option(eigen_tests_ENABLE_UNITY_BUILD "Enable unity builds" OFF)
+    option(eigen_tests_ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
+    option(eigen_tests_ENABLE_CPPCHECK "Enable cpp-check analysis" OFF)
+    option(eigen_tests_ENABLE_PCH "Enable precompiled headers" OFF)
+    option(eigen_tests_ENABLE_CACHE "Enable ccache" OFF)
   else()
-    option(myproject_ENABLE_IPO "Enable IPO/LTO" ON)
-    option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" ON)
-    option(myproject_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" ${SUPPORTS_ASAN})
-    option(myproject_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" ${SUPPORTS_UBSAN})
-    option(myproject_ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
-    option(myproject_ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
-    option(myproject_ENABLE_UNITY_BUILD "Enable unity builds" OFF)
-    option(myproject_ENABLE_CLANG_TIDY "Enable clang-tidy" ON)
-    option(myproject_ENABLE_CPPCHECK "Enable cpp-check analysis" ON)
-    option(myproject_ENABLE_PCH "Enable precompiled headers" OFF)
-    option(myproject_ENABLE_CACHE "Enable ccache" ON)
+    option(eigen_tests_ENABLE_IPO "Enable IPO/LTO" ON)
+    option(eigen_tests_WARNINGS_AS_ERRORS "Treat Warnings As Errors" ON)
+    option(eigen_tests_ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" ${SUPPORTS_ASAN})
+    option(eigen_tests_ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
+    option(eigen_tests_ENABLE_SANITIZER_UNDEFINED "Enable undefined sanitizer" ${SUPPORTS_UBSAN})
+    option(eigen_tests_ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
+    option(eigen_tests_ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
+    option(eigen_tests_ENABLE_UNITY_BUILD "Enable unity builds" OFF)
+    option(eigen_tests_ENABLE_CLANG_TIDY "Enable clang-tidy" ON)
+    option(eigen_tests_ENABLE_CPPCHECK "Enable cpp-check analysis" ON)
+    option(eigen_tests_ENABLE_PCH "Enable precompiled headers" OFF)
+    option(eigen_tests_ENABLE_CACHE "Enable ccache" ON)
   endif()
 
   if(NOT PROJECT_IS_TOP_LEVEL)
     mark_as_advanced(
-      myproject_ENABLE_IPO
-      myproject_WARNINGS_AS_ERRORS
-      myproject_ENABLE_SANITIZER_ADDRESS
-      myproject_ENABLE_SANITIZER_LEAK
-      myproject_ENABLE_SANITIZER_UNDEFINED
-      myproject_ENABLE_SANITIZER_THREAD
-      myproject_ENABLE_SANITIZER_MEMORY
-      myproject_ENABLE_UNITY_BUILD
-      myproject_ENABLE_CLANG_TIDY
-      myproject_ENABLE_CPPCHECK
-      myproject_ENABLE_COVERAGE
-      myproject_ENABLE_PCH
-      myproject_ENABLE_CACHE)
+      eigen_tests_ENABLE_IPO
+      eigen_tests_WARNINGS_AS_ERRORS
+      eigen_tests_ENABLE_SANITIZER_ADDRESS
+      eigen_tests_ENABLE_SANITIZER_LEAK
+      eigen_tests_ENABLE_SANITIZER_UNDEFINED
+      eigen_tests_ENABLE_SANITIZER_THREAD
+      eigen_tests_ENABLE_SANITIZER_MEMORY
+      eigen_tests_ENABLE_UNITY_BUILD
+      eigen_tests_ENABLE_CLANG_TIDY
+      eigen_tests_ENABLE_CPPCHECK
+      eigen_tests_ENABLE_COVERAGE
+      eigen_tests_ENABLE_PCH
+      eigen_tests_ENABLE_CACHE)
   endif()
 
-  myproject_check_libfuzzer_support(LIBFUZZER_SUPPORTED)
-  if(LIBFUZZER_SUPPORTED AND (myproject_ENABLE_SANITIZER_ADDRESS OR myproject_ENABLE_SANITIZER_THREAD OR myproject_ENABLE_SANITIZER_UNDEFINED))
+  eigen_tests_check_libfuzzer_support(LIBFUZZER_SUPPORTED)
+  if(LIBFUZZER_SUPPORTED AND (eigen_tests_ENABLE_SANITIZER_ADDRESS OR eigen_tests_ENABLE_SANITIZER_THREAD OR eigen_tests_ENABLE_SANITIZER_UNDEFINED))
     set(DEFAULT_FUZZER ON)
   else()
     set(DEFAULT_FUZZER OFF)
   endif()
 
-  option(myproject_BUILD_FUZZ_TESTS "Enable fuzz testing executable" ${DEFAULT_FUZZER})
+  option(eigen_tests_BUILD_FUZZ_TESTS "Enable fuzz testing executable" ${DEFAULT_FUZZER})
 
 endmacro()
 
-macro(myproject_global_options)
-  if(myproject_ENABLE_IPO)
+macro(eigen_tests_global_options)
+  if(eigen_tests_ENABLE_IPO)
     include(cmake/InterproceduralOptimization.cmake)
-    myproject_enable_ipo()
+    eigen_tests_enable_ipo()
   endif()
 
-  myproject_supports_sanitizers()
+  eigen_tests_supports_sanitizers()
 
-  if(myproject_ENABLE_HARDENING AND myproject_ENABLE_GLOBAL_HARDENING)
+  if(eigen_tests_ENABLE_HARDENING AND eigen_tests_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
     if(NOT SUPPORTS_UBSAN 
-       OR myproject_ENABLE_SANITIZER_UNDEFINED
-       OR myproject_ENABLE_SANITIZER_ADDRESS
-       OR myproject_ENABLE_SANITIZER_THREAD
-       OR myproject_ENABLE_SANITIZER_LEAK)
+       OR eigen_tests_ENABLE_SANITIZER_UNDEFINED
+       OR eigen_tests_ENABLE_SANITIZER_ADDRESS
+       OR eigen_tests_ENABLE_SANITIZER_THREAD
+       OR eigen_tests_ENABLE_SANITIZER_LEAK)
       set(ENABLE_UBSAN_MINIMAL_RUNTIME FALSE)
     else()
       set(ENABLE_UBSAN_MINIMAL_RUNTIME TRUE)
     endif()
-    message("${myproject_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${myproject_ENABLE_SANITIZER_UNDEFINED}")
-    myproject_enable_hardening(myproject_options ON ${ENABLE_UBSAN_MINIMAL_RUNTIME})
+    message("${eigen_tests_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${eigen_tests_ENABLE_SANITIZER_UNDEFINED}")
+    eigen_tests_enable_hardening(eigen_tests_options ON ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 endmacro()
 
-macro(myproject_local_options)
+macro(eigen_tests_local_options)
   if(PROJECT_IS_TOP_LEVEL)
     include(cmake/StandardProjectSettings.cmake)
   endif()
 
-  add_library(myproject_warnings INTERFACE)
-  add_library(myproject_options INTERFACE)
+  add_library(eigen_tests_warnings INTERFACE)
+  add_library(eigen_tests_options INTERFACE)
 
   include(cmake/CompilerWarnings.cmake)
-  myproject_set_project_warnings(
-    myproject_warnings
-    ${myproject_WARNINGS_AS_ERRORS}
+  eigen_tests_set_project_warnings(
+    eigen_tests_warnings
+    ${eigen_tests_WARNINGS_AS_ERRORS}
     ""
     ""
     ""
@@ -171,66 +171,66 @@ macro(myproject_local_options)
 
   if(NOT EMSCRIPTEN)
     include(cmake/Sanitizers.cmake)
-    myproject_enable_sanitizers(
-      myproject_options
-      ${myproject_ENABLE_SANITIZER_ADDRESS}
-      ${myproject_ENABLE_SANITIZER_LEAK}
-      ${myproject_ENABLE_SANITIZER_UNDEFINED}
-      ${myproject_ENABLE_SANITIZER_THREAD}
-      ${myproject_ENABLE_SANITIZER_MEMORY})
+    eigen_tests_enable_sanitizers(
+      eigen_tests_options
+      ${eigen_tests_ENABLE_SANITIZER_ADDRESS}
+      ${eigen_tests_ENABLE_SANITIZER_LEAK}
+      ${eigen_tests_ENABLE_SANITIZER_UNDEFINED}
+      ${eigen_tests_ENABLE_SANITIZER_THREAD}
+      ${eigen_tests_ENABLE_SANITIZER_MEMORY})
   endif()
 
-  set_target_properties(myproject_options PROPERTIES UNITY_BUILD ${myproject_ENABLE_UNITY_BUILD})
+  set_target_properties(eigen_tests_options PROPERTIES UNITY_BUILD ${eigen_tests_ENABLE_UNITY_BUILD})
 
-  if(myproject_ENABLE_PCH)
+  if(eigen_tests_ENABLE_PCH)
     target_precompile_headers(
-      myproject_options
+      eigen_tests_options
       INTERFACE
       <vector>
       <string>
       <utility>)
   endif()
 
-  if(myproject_ENABLE_CACHE)
+  if(eigen_tests_ENABLE_CACHE)
     include(cmake/Cache.cmake)
-    myproject_enable_cache()
+    eigen_tests_enable_cache()
   endif()
 
   include(cmake/StaticAnalyzers.cmake)
-  if(myproject_ENABLE_CLANG_TIDY)
-    myproject_enable_clang_tidy(myproject_options ${myproject_WARNINGS_AS_ERRORS})
+  if(eigen_tests_ENABLE_CLANG_TIDY)
+    eigen_tests_enable_clang_tidy(eigen_tests_options ${eigen_tests_WARNINGS_AS_ERRORS})
   endif()
 
-  if(myproject_ENABLE_CPPCHECK)
-    myproject_enable_cppcheck(${myproject_WARNINGS_AS_ERRORS} "" # override cppcheck options
+  if(eigen_tests_ENABLE_CPPCHECK)
+    eigen_tests_enable_cppcheck(${eigen_tests_WARNINGS_AS_ERRORS} "" # override cppcheck options
     )
   endif()
 
-  if(myproject_ENABLE_COVERAGE)
+  if(eigen_tests_ENABLE_COVERAGE)
     include(cmake/Tests.cmake)
-    myproject_enable_coverage(myproject_options)
+    eigen_tests_enable_coverage(eigen_tests_options)
   endif()
 
-  if(myproject_WARNINGS_AS_ERRORS)
+  if(eigen_tests_WARNINGS_AS_ERRORS)
     check_cxx_compiler_flag("-Wl,--fatal-warnings" LINKER_FATAL_WARNINGS)
     if(LINKER_FATAL_WARNINGS)
       # This is not working consistently, so disabling for now
-      # target_link_options(myproject_options INTERFACE -Wl,--fatal-warnings)
+      # target_link_options(eigen_tests_options INTERFACE -Wl,--fatal-warnings)
     endif()
   endif()
 
-  if(myproject_ENABLE_HARDENING AND NOT myproject_ENABLE_GLOBAL_HARDENING)
+  if(eigen_tests_ENABLE_HARDENING AND NOT eigen_tests_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
     if(NOT SUPPORTS_UBSAN 
-       OR myproject_ENABLE_SANITIZER_UNDEFINED
-       OR myproject_ENABLE_SANITIZER_ADDRESS
-       OR myproject_ENABLE_SANITIZER_THREAD
-       OR myproject_ENABLE_SANITIZER_LEAK)
+       OR eigen_tests_ENABLE_SANITIZER_UNDEFINED
+       OR eigen_tests_ENABLE_SANITIZER_ADDRESS
+       OR eigen_tests_ENABLE_SANITIZER_THREAD
+       OR eigen_tests_ENABLE_SANITIZER_LEAK)
       set(ENABLE_UBSAN_MINIMAL_RUNTIME FALSE)
     else()
       set(ENABLE_UBSAN_MINIMAL_RUNTIME TRUE)
     endif()
-    myproject_enable_hardening(myproject_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
+    eigen_tests_enable_hardening(eigen_tests_options OFF ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 
 endmacro()
