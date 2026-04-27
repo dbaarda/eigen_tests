@@ -23,11 +23,9 @@ FormatStyle:     none
 
 CheckOptions:
   - key: readability-identifier-length.IgnoredVariableNames
-    value: 'x|y|z'
+    value: 'x|y|z|w|i|j|k|a|b|c|v|s'
   - key: readability-identifier-length.IgnoredParameterNames
-    value: 'x|y|z'
-
-
+    value: 'x|y|z|w|i|j|k|a|b|c|v|s'
 
 
 
