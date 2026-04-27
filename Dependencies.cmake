@@ -80,4 +80,13 @@ function(eigen_tests_setup_dependencies)
       "main")
   endif()
 
+  if(NOT TARGET Eigen3::Eigen)
+    CPMAddPackage(
+      URI "gl:libeigen/eigen#5.0.1"
+      OPTIONS
+        "EIGEN_BUILD_DOC OFF"
+        "EIGEN_BUILD_PKGCONFIG OFF"
+    )
+  endif()
+
 endfunction()
