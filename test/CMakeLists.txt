@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15...3.23)
 
-project(CmakeConfigPackageTests 
+project(CmakeConfigPackageTests
   VERSION ${PROJECT_VERSION}
   LANGUAGES CXX)
 
@@ -31,13 +31,17 @@ add_test(NAME cli.has_help COMMAND intro --help)
 add_test(NAME cli.version_matches COMMAND intro --version)
 set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${PROJECT_VERSION}")
 
-add_executable(tests tests.cpp)
+add_executable(tests
+  tests.cpp
+  scalarwrapper_test.cpp)
 target_link_libraries(
   tests
   PRIVATE eigen_tests::eigen_tests_warnings
           eigen_tests::eigen_tests_options
           eigen_tests::sample_library
-          Catch2::Catch2WithMain)
+          Catch2::Catch2WithMain
+          fmt::fmt
+          Eigen3::Eigen)
 
 eigen_tests_configure_linker(tests)
 
