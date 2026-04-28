@@ -33,6 +33,7 @@ set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${P
 
 add_executable(tests
   tests.cpp
+  eigen_tests.cpp
   scalarwrapper_test.cpp)
 target_link_libraries(
   tests
